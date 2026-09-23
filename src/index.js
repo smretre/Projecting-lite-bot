@@ -22,10 +22,6 @@ const formatExpiryDate = (days) => {
 bot.start(async (ctx) => {
   const user = await getUser(ctx.from.id);
   const isVip = user.is_premium;
-  
-  const statusBadge = isVip 
-    .replace('true', '🌟 **STATUS:** Assinante VIP / Ativo') 
-    .replace('false', '👤 **STATUS:** Plano Gratuito (Visitante)'); // Ajuste visual limpo
 
   const statusText = isVip ? '🌟 **Membro VIP Ativo**' : '👤 **Plano Gratuito**';
 
