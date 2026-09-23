@@ -68,6 +68,27 @@ bot.start(async (ctx) => {
   }
 });
 
+// Comando Secreto de Admin para testes (Ativa VIP para o seu ID)
+bot.command('ativar_admin', async (ctx) => {
+  const telegramId = ctx.from.id;
+
+  // Substitua 'SEU_ID_DO_TELEGRAM_AQUI' pelo seu número de ID real do Telegram
+  const MEU_ID_DE_ADMIN = 6063904865; // <-- COLOCA O TEU ID AQUI
+
+  if (telegramId !== MEU_ID_DE_ADMIN) {
+    return ctx.reply('❌ Acesso negado.');
+  }
+
+  try {
+    // Ativa o VIP por 365 dias para você testar à vontade
+    await setPremium(telegramId, 365);
+    await ctx.reply('👑 **Modo Admin Ativado!** Sua conta agora é **VIP** por 1 ano para testes.');
+  } catch (err) {
+    console.error('Erro ao ativar admin:', err);
+    ctx.reply('❌ Erro ao ativar o modo admin.');
+  }
+});
+
 // Recurso Grátis 1: Cotações
 bot.command('cotacao', (ctx) => {
   ctx.reply(
