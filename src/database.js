@@ -24,7 +24,13 @@ function getUser(telegramId) {
       if (!row) {
         db.run('INSERT INTO users (telegram_id) VALUES (?)', [telegramId], function (insertErr) {
           if (insertErr) return reject(insertErr);
-          resolve({ telegram_id: telegramId, is_premium: 0, premium_until: null });
+          // Retorna o formato compatível com o seu index.js original
+          resolve({ 
+            telegram_id: telegramId, 
+            is_premium: 0, 
+            premium_until: null,
+            status: '👤 Plano Gratuito'
+          });
         });
       } else {
         // Verifica se o premium expirou
@@ -32,9 +38,13 @@ function getUser(telegramId) {
         const premiumUntil = row.premium_until ? new Date(row.premium_until) : null;
         const isStillValid = row.is_premium && premiumUntil && premiumUntil > now;
 
+        const validStatus = isStillValid ? 1 : 0;
+
         resolve({
           ...row,
-          is_premium: isStillValid ? 1 : 0
+          is_premium: validStatus,
+          // Cria a string de status dinamicamente para o index.js original ler sem erros
+          status: validStatus ? '🌟 Usuário VIP / Premium' : '👤 Plano Gratuito'
         });
       }
     });
