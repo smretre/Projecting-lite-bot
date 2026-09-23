@@ -7,12 +7,12 @@ const { createPixPayment, payment } = require('./mercadopago');
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 const app = express();
 
-// Registra a lista oficial de comandos no menu do Telegram
+// Registra a lista oficial de comandos unificada no menu do Telegram
 bot.telegram.setMyCommands([
   { command: 'start', description: 'Painel principal e status da conta' },
   { command: 'cotacao', description: 'Monitor de cripto e dólar em tempo real' },
-  { command: 'alertafree', description: 'Boletim diário de tendências' },
-  { command: 'suporte', description: 'Central de atendimento' },
+  { command: 'alertafree', description: 'Boletim diário de tendências globais' },
+  { command: 'suporte', description: 'Central de atendimento e FAQ' },
   { command: 'analiseia', description: '🔒 Relatório de IA e Arbitragem (VIP)' },
   { command: 'sinaisvip', description: '🔒 Sinais de alta assertividade (VIP)' },
   { command: 'materialvip', description: '🔒 Downloads e templates exclusivos (VIP)' },
@@ -30,32 +30,42 @@ const formatExpiryDate = (days) => {
 
 // ------------------- COMANDOS DO BOT ------------------- //
 
-// Menu Inicial / Painel do Cliente
+// Menu Inicial com Imagem Institucional de Alto Impacto
 bot.start(async (ctx) => {
   const user = await getUser(ctx.from.id);
   const isVip = user.is_premium;
-
   const statusText = isVip ? '🌟 **Membro VIP Ativo**' : '👤 **Plano Gratuito**';
 
-  await ctx.reply(
+  // URL de uma imagem corporativa de alta qualidade (pode substituir por uma imagem hospedada sua)
+  const bannerUrl = 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1000&auto=format&fit=crop';
+
+  const captionText = 
     `🤖 **TECHNOABYSS INTELLIGENCE CORE**\n` +
     `━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
-    `Seu Painel de Controle Oficial\n\n` +
+    `Ecossistema Avançado de Inteligência Financeira & Sinais\n\n` +
     `👤 **Usuário:** \`${ctx.from.first_name}\`\n` +
-    `📊 **Plano Atual:** ${statusText}\n\n` +
-    `📌 **COMANDOS GRATUITOS (UTILIDADES):**\n` +
+    `📊 **Status Atual:** ${statusText}\n\n` +
+    `📌 **RECURSOS GRATUITOS:**\n` +
     `• /cotacao - Monitor de ativos e câmbio em tempo real\n` +
     `• /alertafree - Boletim diário de tendências globais\n` +
-    `• /suporte - Canais de atendimento e FAQ\n\n` +
+    `• /suporte - Canais de atendimento oficiais\n\n` +
     `🚀 **ÁREA EXCLUSIVA PREMIUM (VIP):**\n` +
     `• /analiseia - Inteligência Preditiva e Arbitragem\n` +
     `• /sinaisvip - Sinais de Alta Assertividade (DeFi/Crypto)\n` +
     `• /materialvip - Downloads de E-books e Templates\n\n` +
-    `💎 **ASSINATURA RECORRENTE:**\n` +
-    `• /assinar - Desbloqueie o acesso completo por R$ 29,90/mês\n` +
-    `━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
-    { parse_mode: 'Markdown' }
-  );
+    `💎 **ASSINATURA CORPORATIVA:**\n` +
+    `• /assinar - Desbloqueie todo o acervo por apenas **R$ 29,90/mês**\n` +
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+
+  try {
+    await ctx.replyWithPhoto(bannerUrl, {
+      caption: captionText,
+      parse_mode: 'Markdown'
+    });
+  } catch (err) {
+    // Fallback caso ocorra erro ao carregar a imagem externa
+    await ctx.reply(captionText, { parse_mode: 'Markdown' });
+  }
 });
 
 // Recurso Grátis 1: Cotações
@@ -67,20 +77,20 @@ bot.command('cotacao', (ctx) => {
     `• **Ethereum (ETH):** \`$3,510.50\` (+0.9%)\n` +
     `• **Dólar Comercial:** \`R$ 5,42\` (-0.3%)\n` +
     `• **Gas Fee (Ethereum):** \`18 Gwei\`\n\n` +
-    `💡 *Dica: Assine o /assinar para receber análises profundas de IA.*`,
+    `💡 *Dica: Assine o /assinar para desbloquear análises preditivas avançadas.*`,
     { parse_mode: 'Markdown' }
   );
 });
 
-// Recurso Grátis 2: Alertas Básicos
-bot.command('alerta_free', (ctx) => {
+// Recurso Grátis 2: Alertas Básicos (Suporta alerta_free e alertafree)
+bot.command(['alerta_free', 'alertafree'], (ctx) => {
   ctx.reply(
     `📢 **BOLETIM INFORMATIVO GLOBAL**\n` +
     `━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
-    `• Mercado consolidando em faixa de suporte importante.\n` +
-    `• Bancos Centrais mantêm cautela sobre taxas de juros globais.\n` +
+    `• Mercado consolidando em faixa de suporte institucional importante.\n` +
+    `• Bancos Centrais mantêm cautela sobre projeções de liquidez.\n` +
     `• Volatilidade esperada para os próximos dias devido a relatórios macroeconômicos.\n\n` +
-    `⚡ *Para receber alertas em tempo real de oportunidades, acesse /assinar.*`,
+    `⚡ *Para receber sinais em tempo real, utilize o comando /assinar.*`,
     { parse_mode: 'Markdown' }
   );
 });
@@ -94,7 +104,7 @@ bot.command('suporte', (ctx) => {
     `• **Canal Oficial:** @TechnoAbyss\n` +
     `• **Atendimento Humano:** @SuporteTechnoAbyss\n` +
     `• **Tempo Médio de Resposta:** Até 2 horas úteis.\n\n` +
-    `_Nosso sistema de pagamento via PIX é 100% automatizado._`,
+    `_Nosso sistema de pagamento via PIX é 100% automatizado e instantâneo._`,
     { parse_mode: 'Markdown' }
   );
 });
@@ -102,15 +112,15 @@ bot.command('suporte', (ctx) => {
 // ------------------- RECURSOS PREMIUM (COM PAYWALL) ------------------- //
 
 // Premium 1: Análise Preditiva por IA
-bot.command('analise_ia', async (ctx) => {
+bot.command(['analise_ia', 'analiseia'], async (ctx) => {
   const user = await getUser(ctx.from.id);
 
   if (!user.is_premium) {
     return ctx.reply(
-      `🔒 **ACESSO RESTRITO - PAYWALL**\n` +
+      `🔒 **ACESSO RESTRITO - PAYWALL CORPORATIVO**\n` +
       `━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
       `A ferramenta de **Análise Preditiva por Inteligência Artificial** é exclusiva para membros assinantes.\n\n` +
-      `Desbloqueie agora mesmo por apenas **R$ 29,90/mês** digitando:\n` +
+      `Eleve o nível das suas operações agora mesmo por apenas **R$ 29,90/mês**:\n` +
       `/assinar`,
       { parse_mode: 'Markdown' }
     );
@@ -129,14 +139,14 @@ bot.command('analise_ia', async (ctx) => {
 });
 
 // Premium 2: Sinais VIP de Alta Assertividade
-bot.command('sinais_vip', async (ctx) => {
+bot.command(['sinais_vip', 'sinaisvip'], async (ctx) => {
   const user = await getUser(ctx.from.id);
 
   if (!user.is_premium) {
     return ctx.reply(
       `🔒 **CONTEÚDO EXCLUSIVO VIP**\n` +
       `━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
-      `Os sinais de alta assertividade são restritos a assinantes ativos.\n\n` +
+      `Os sinais de alta assertividade são restritos a assinantes ativos do plano corporativo.\n\n` +
       `Garanta seu acesso imediato com liberação automática via PIX usando /assinar.`,
       { parse_mode: 'Markdown' }
     );
@@ -146,7 +156,7 @@ bot.command('sinais_vip', async (ctx) => {
     `🚀 **[SINAL VIP EXCLUSIVO]**\n` +
     `━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
     `• **Par:** ETH / USDC (DeFi Pool)\n` +
-    `• **Oportunidade:** Ineficiência de liquidez detectada na DEX.\n` +
+    `• **Oportunidade:** Ineficiência de liquidez detetada na DEX.\n` +
     `• **Ação Recomendada:** Alocação tática de curto prazo.\n` +
     `• **Target de Lucro:** 4.8% APY ajustado.`,
     { parse_mode: 'Markdown' }
@@ -154,15 +164,15 @@ bot.command('sinais_vip', async (ctx) => {
 });
 
 // Premium 3: Materiais e Downloads VIP
-bot.command('material_vip', async (ctx) => {
+bot.command(['material_vip', 'materialvip'], async (ctx) => {
   const user = await getUser(ctx.from.id);
 
   if (!user.is_premium) {
     return ctx.reply(
       `🔒 **BIBLIOTECA VIP BLOQUEADA**\n` +
       `━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
-      `Planilhas avançadas, templates de automação e e-books são exclusivos para assinantes.\n\n` +
-      `Digite /assinar para desbloquear todo o acervo.`,
+      `Planilhas avançadas, templates de automação e e-books são restritos a assinantes.\n\n` +
+      `Digite /assinar para desbloquear todo o acervo imediatamente.`,
       { parse_mode: 'Markdown' }
     );
   }
@@ -232,9 +242,9 @@ app.post('/webhook/mercadopago', async (req, res) => {
           `━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
           `Parabéns! Sua assinatura **VIP** foi ativada por **${subscriptionDays} dias**.\n\n` +
           `🔓 **Todos os recursos avançados foram liberados:**\n` +
-          `• /analise_ia - Relatórios e sinais preditivos\n` +
-          `• /sinais_vip - Oportunidades de mercado\n` +
-          `• /material_vip - Downloads e templates\n\n` +
+          `• /analiseia - Relatórios e sinais preditivos\n` +
+          `• /sinaisvip - Oportunidades de mercado\n` +
+          `• /materialvip - Downloads e templates\n\n` +
           `Aproveite ao máximo o seu novo painel corporativo!`,
           { parse_mode: 'Markdown' }
         );
