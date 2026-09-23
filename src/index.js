@@ -7,6 +7,18 @@ const { createPixPayment, payment } = require('./mercadopago');
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 const app = express();
 
+// Registra a lista oficial de comandos no menu do Telegram
+bot.telegram.setMyCommands([
+  { command: 'start', description: 'Painel principal e status da conta' },
+  { command: 'cotacao', description: 'Monitor de cripto e dólar em tempo real' },
+  { command: 'alerta_free', description: 'Boletim diário de tendências' },
+  { command: 'suporte', description: 'Central de atendimento' },
+  { command: 'analise_ia', description: '🔒 Relatório de IA e Arbitragem (VIP)' },
+  { command: 'sinais_vip', description: '🔒 Sinais de alta assertividade (VIP)' },
+  { command: 'material_vip', description: '🔒 Downloads e templates exclusivos (VIP)' },
+  { command: 'assinar', description: '💎 Desbloquear acesso VIP via PIX' }
+]);
+
 app.use(express.json());
 
 // ------------------- UTILITÁRIOS & FORMATAÇÃO ------------------- //
