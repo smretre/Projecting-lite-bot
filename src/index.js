@@ -11,11 +11,11 @@ const app = express();
 bot.telegram.setMyCommands([
   { command: 'start', description: 'Painel principal e status da conta' },
   { command: 'cotacao', description: 'Monitor de cripto e dólar em tempo real' },
-  { command: 'alerta_free', description: 'Boletim diário de tendências' },
+  { command: 'alertafree', description: 'Boletim diário de tendências' },
   { command: 'suporte', description: 'Central de atendimento' },
-  { command: 'analise_ia', description: '🔒 Relatório de IA e Arbitragem (VIP)' },
-  { command: 'sinais_vip', description: '🔒 Sinais de alta assertividade (VIP)' },
-  { command: 'material_vip', description: '🔒 Downloads e templates exclusivos (VIP)' },
+  { command: 'analiseia', description: '🔒 Relatório de IA e Arbitragem (VIP)' },
+  { command: 'sinaisvip', description: '🔒 Sinais de alta assertividade (VIP)' },
+  { command: 'materialvip', description: '🔒 Downloads e templates exclusivos (VIP)' },
   { command: 'assinar', description: '💎 Desbloquear acesso VIP via PIX' }
 ]);
 
@@ -45,12 +45,12 @@ bot.start(async (ctx) => {
     `📊 **Plano Atual:** ${statusText}\n\n` +
     `📌 **COMANDOS GRATUITOS (UTILIDADES):**\n` +
     `• /cotacao - Monitor de ativos e câmbio em tempo real\n` +
-    `• /alerta_free - Boletim diário de tendências globais\n` +
+    `• /alertafree - Boletim diário de tendências globais\n` +
     `• /suporte - Canais de atendimento e FAQ\n\n` +
     `🚀 **ÁREA EXCLUSIVA PREMIUM (VIP):**\n` +
-    `• /analise_ia - Inteligência Preditiva e Arbitragem\n` +
-    `• /sinais_vip - Sinais de Alta Assertividade (DeFi/Crypto)\n` +
-    `• /material_vip - Downloads de E-books e Templates\n\n` +
+    `• /analiseia - Inteligência Preditiva e Arbitragem\n` +
+    `• /sinaisvip - Sinais de Alta Assertividade (DeFi/Crypto)\n` +
+    `• /materialvip - Downloads de E-books e Templates\n\n` +
     `💎 **ASSINATURA RECORRENTE:**\n` +
     `• /assinar - Desbloqueie o acesso completo por R$ 29,90/mês\n` +
     `━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
